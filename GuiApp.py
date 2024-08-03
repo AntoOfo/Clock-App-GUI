@@ -68,7 +68,13 @@ def timerwindow():
                          command=timersubmit)
     submittimer.pack(pady=30)
     
-    # Create and display the timer label
+    backbutton = Button(timer_window,
+                        text="Back",
+                        font=("Arial",10,"bold"),
+                        command=open_main_menu)
+    backbutton.pack(pady= 20)
+    
+   
     timer_label = Label(timer_window,
                         text="00:00",
                         font=("Arial", 25, "bold"))
@@ -76,9 +82,59 @@ def timerwindow():
 
     timer_window.mainloop()
 
+def update_stopwatch():
+    global sw_minutes, sw_seconds
+    
+    sw_seconds = sw_seconds + 1
+    if sw_seconds > 59:
+        sw_seconds = 0
+        sw_minutes = sw_minutes + 1
+            
+    sw_text = f"{sw_minutes:02}:{sw_seconds:02}"
+    sw_label.config(text=sw_text)
+    sw_window.after(1000, update_stopwatch)
+    
+    
+def stopwatchwindow():
+    global start_button, sw_label, sw_window, sw_seconds, sw_minutes
+    
+    sw_minutes = 0
+    sw_seconds = 0
+    sw_window = Tk()
+    sw_window.geometry("540x540")
+    sw_window.title("Stopwatch")
+    sw_window.config(background="#9E9E9E")
+    sw_header = Label(sw_window,
+                      text="Stopwatch",
+                      font=("Arial",40,"bold"),
+                      bg="#9E9E9E")
+    sw_header.pack()
+    
+    start_button = Button(sw_window,
+                          text="Start",
+                          font=("Arial",15,"bold"),
+                          command=update_stopwatch)
+    start_button.pack(pady=30)
+    
+    back_button = Button(sw_window,
+                         text="Back",
+                         font=("Arial",15,"bold"),
+                         command=open_main_menu)
+    back_button.pack(pady=20)
+    
+    sw_label = Label(sw_window,
+                     text="0:00",
+                     font=("Arial",40,"bold"),
+                     bg="#9E9E9E")
+    sw_label.pack(pady=20)
+    
+    sw_window.mainloop()
 
-
+def open_main_menu():
+    menu_window.deiconify()
+    
 def main():
+    global menu_window
     menu_window = Tk()      # instance of window
     menu_window.geometry("540x540")
     menu_window.title("Clock App")
@@ -103,6 +159,7 @@ def main():
     timer_button.pack(pady=80)
 
     stopwatch_button = Button(menu_window,
+                              command=stopwatchwindow,
                               text="Stopwatch",
                               font=("Arial",15,"bold"))
     stopwatch_button.pack()
