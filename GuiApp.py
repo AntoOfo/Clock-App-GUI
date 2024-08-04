@@ -7,19 +7,25 @@ import pytz
 def timersubmit():
     # global to access variables outside the function
     global user_minutes, user_seconds, timer_running, timer_label     
-
-    user_minutes = int(minutes_entry.get())
-    user_seconds = int(seconds_entry.get())
-    timer_running = True  # set to true when timer starts
+    try:
+        user_minutes = int(minutes_entry.get())
+        user_seconds = int(seconds_entry.get())
+        timer_running = True  # set to true when timer starts
     
-    update_timer()     
+        update_timer()   
+    except ValueError:
+        timer_label.config(text="Invalid Input")
 
 def update_timer():
     global user_minutes, user_seconds, timer_running
-
+    
     if not timer_running:
         return
-
+    if not (0<= user_minutes) or not (0 <= user_seconds <= 59):
+        timer_label.config(text="Invalid input")
+        return
+    
+    
     if user_seconds == 0 and user_minutes == 0:
         timer_label.config(text="Time's Up!")
         playsound("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/Alarm Clock Sound Effect (Animated).mp3")
@@ -233,7 +239,18 @@ def alarm_window():
 
     alarm_window.mainloop()
 
+def world_time():
+    selected_tz = y.get()
+    get_utc = datetime.now(timezone.utc)
+    get_timezone = get_utc.astimezone(pytz.timezone(selected_tz))
+    format_str = '%H:%M'
+    time_country = get_timezone.strftime(format_str)
+   
+    world_time_label.config(text=time_country)
+    world_time_label.after(1000, world_time)
+
 def worldclock_window():
+   global y, world_time_label
    world_window = Tk()
    world_window.geometry("540x540")
    world_window.title("World Clock")
@@ -246,6 +263,11 @@ def worldclock_window():
                         bg="#9E9E9E")
    world_header.pack()
    
+   worldsubmit = Button(world_window,
+                        text="Submit",
+                        font=("Arial",10,"bold"),
+                        command=world_time)
+   worldsubmit.pack()
      
    y = StringVar(world_window)
    y.set("America/New_York")        # default text set
@@ -255,11 +277,11 @@ def worldclock_window():
    capital_drop.config(font=("Arial",12))
    capital_drop.pack(padx=10, pady=50, fill='x')
    
-   world_time = Label(world_window,
+   world_time_label = Label(world_window,
                       text="00:00",
                       font=("Arial",15,"bold"),
                       bg="#9E9E9E")
-   world_time.pack()
+   world_time_label.pack()
    
 
    world_window.mainloop()
