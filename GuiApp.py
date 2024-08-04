@@ -3,6 +3,7 @@ from playsound import playsound
 from time import sleep
 from datetime import datetime, timezone
 import pytz
+from PIL import Image, ImageTk
 
 def timersubmit():
     # global to access variables outside the function
@@ -310,20 +311,26 @@ def main():
     menu_window.geometry("540x540")
     menu_window.resizable(False, False) # Cant resize window
     menu_window.title("Clock App")
+    
+    total_columns = 3
+    menu_window.grid_columnconfigure((0,1,2,3,4,5,6), weight=1)
+    for i in range(7):
+        menu_window.grid_rowconfigure(i, weight=1)
 
     icon = PhotoImage(file="Clock.png") # Turns png to photoimage
     menu_window.iconphoto(True, icon)
-    menu_window.config(background="#9E9E9E")
+    menu_window.config(background="#333333")
+    
+    image = Image.open("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/bluebutton.png")
+    bluebutton = ImageTk.PhotoImage(image)
 
     label = Label(menu_window,      # title
-                  text="CLOCK", 
-                  font=("Arial",40,"bold"), 
-                  bg="#9E9E9E",
-                  relief=SUNKEN,
-                  padx=5,
-                  pady=5)
-    label.pack()    # places label to top center
-
+                  text="Clock App", 
+                  font=("Calibri",35), 
+                  foreground="White",
+                  bg = "#1F618D")
+    label.grid(row=0,column=3)    # places label to top center
+    """
     timer_button = Button(menu_window,
                           command=timerwindow,  # opens timer window
                           text="Timer",
@@ -346,7 +353,7 @@ def main():
                           text="World Clock",
                           font=("Arial",15,"bold"),
                           command=worldclock_window)
-    world_button.pack(pady=0.3)
+    world_button.pack(pady=0.3)"""
     menu_window.mainloop()   # puts window on screen and listens for events
     
 main()
