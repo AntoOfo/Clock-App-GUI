@@ -135,37 +135,56 @@ def open_main_menu():
     menu_window.deiconify()
   
 def alarmsubmit():
-    global alarm_user_hours, alarm_user_mins, alarm_user_ampm, alarm_running, alarm_label
+    global alarm_user_hours, alarm_user_mins, alarm_user_ampm, alarm_running
 
-    alarm_user_hours = int(alarm_hour_entry.get())
-    alarm_user_mins = int(alarm_mins_entry.get())
-    alarm_user_ampm = am_pm.get()
-    alarm_running = True
-    
-    update_alarm()
+    try:
+        alarm_user_hours = int(alarm_hour_entry.get())
+        alarm_user_mins = int(alarm_mins_entry.get())
+        alarm_user_ampm = am_pm.get().lower()
+
+        # coverts 12hr format to 24hr
+        if alarm_user_ampm == "pm" and alarm_user_hours != 12:
+            alarm_user_hours += 12
+        elif alarm_user_ampm == "am" and alarm_user_hours == 12:
+            alarm_user_hours = 0
+
+        #case
+        if not (0 <= alarm_user_hours < 24) or not (0 <= alarm_user_mins < 60):
+            alarm_label.config(text="Invalid time")
+            return
+
+        alarm_running = True
+        alarm_label.config(text=f"Alarm set for {alarm_user_hours:02}:{alarm_user_mins:02}")
+        update_alarm()
+        
+    except ValueError:
+        alarm_label.config(text="Invalid input")
     
 def update_alarm():
-    global alarm_user_hours, alarm_user_mins, alarm_user_ampm
-    if alarm_user_ampm == "pm":
-        if alarm_user_hours != 12:
-            alarm_user_hours += 12
-    elif alarm_user_ampm == "am":
-        if alarm_user_hours == 12:
-            alarm_user_hours = 0
-            
-    if alarm_user_hours > 23 or alarm_user_hours < 0:
-        return  # maybe change to continue
-    elif alarm_user_mins > 59 or alarm_user_mins < 0:
-        return  # maybe change to continue
-    
-    alarm_label.config(text=f"Alarm set for {alarm_user_hours:02}:{alarm_user_mins}")
-    
-    current_time = datetime.now()
-    if (alarm_user_hours == current_time.hour and alarm_user_mins == current_time.minute):
-        alarm_label.config(text="Rise and Shine!")
-        playsound("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/Alarm Clock Sound Effect (Animated).mp3")
+    global alarm_user_hours, alarm_user_mins, alarm_running
+
+    if not alarm_running:
         return
-    
+
+    current_time = datetime.now()
+    current_hours = current_time.hour
+    current_minutes = current_time.minute
+    current_seconds = current_time.second
+
+    #debugging purpose
+    print(f"Current Time: {current_hours:02}:{current_minutes:02}:{current_seconds:02}")
+    print(f"Alarm Time: {alarm_user_hours:02}:{alarm_user_mins:02}")
+
+    if alarm_user_hours == current_hours and alarm_user_mins == current_minutes:
+        alarm_label.config(text="Rise and Shine!")
+        try:
+            playsound("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/Alarm Clock Sound Effect (Animated).mp3")
+        except Exception as e:
+            print(f"Error playing sound: {e}")
+        alarm_running = False
+        return
+
+    # checks every second
     alarm_label.after(1000, update_alarm)
     
 
@@ -208,6 +227,11 @@ def alarm_window():
 
     alarm_window.mainloop()
 
+def worldclock_window():
+   world_window = Tk()
+   
+
+   world_window.mainloop()
 
     
 def main():
@@ -249,7 +273,8 @@ def main():
 
     world_button = Button(menu_window,
                           text="World Clock",
-                          font=("Arial",15,"bold"))
+                          font=("Arial",15,"bold"),
+                          command=worldclock_window)
     world_button.pack(pady=0.3)
     menu_window.mainloop()   # puts window on screen and listens for events
     
