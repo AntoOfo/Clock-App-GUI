@@ -322,38 +322,69 @@ def main():
     menu_window.config(background="#333333")
     
     image = Image.open("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/bluebutton.png")
-    bluebutton = ImageTk.PhotoImage(image)
+    small_bluebutton = image.resize((330,140), Image.LANCZOS)   # numbers are width/height
+    photo = ImageTk.PhotoImage(small_bluebutton)
 
     label = Label(menu_window,      # title
+                  image=photo,
                   text="Clock App", 
-                  font=("Calibri",35), 
+                  font=("Calibri",50), 
                   foreground="White",
-                  bg = "#1F618D")
-    label.grid(row=0,column=3)    # places label to top center
-    """
+                  compound='center',
+                  bg = "#333333")
+    label.place(x=105, y=25)   # places label to top center
+    
+    timer_button_image = image.resize((115, 60), Image.LANCZOS)
+    photo_timer_button = ImageTk.PhotoImage(timer_button_image)
     timer_button = Button(menu_window,
+                          image=photo_timer_button,
                           command=timerwindow,  # opens timer window
                           text="Timer",
-                          font=("Arial",15,"bold"))
-    timer_button.pack(pady=80)
-
+                          font=("Arial",25),
+                          foreground="White",
+                          compound='center',
+                          bg="#333333",
+                          relief=FLAT)
+    timer_button.place(x=60, y=175)
+    
+    sw_button_image = image.resize((175, 60), Image.LANCZOS)
+    photo_sw_button = ImageTk.PhotoImage(sw_button_image)
     stopwatch_button = Button(menu_window,
+                              image=photo_sw_button,                          
                               command=stopwatchwindow,
                               text="Stopwatch",
-                              font=("Arial",15,"bold"))
-    stopwatch_button.pack()
-
+                              font=("Arial",25),
+                              fg="White",
+                              compound='center',
+                              bg="#333333",
+                              relief=FLAT)
+    stopwatch_button.place(x=340,y=175)
+    
+    alarm_button_image = image.resize((115, 60), Image.LANCZOS)
+    photo_alarm_button = ImageTk.PhotoImage(alarm_button_image)
     alarm_button = Button(menu_window,
+                          image=photo_alarm_button,
                           text="Alarm",
-                          font=("Arial",15,"bold"),
-                          command=alarm_window)
-    alarm_button.pack(pady=70)
-
+                          font=("Arial",25),
+                          fg="White",
+                          command=alarm_window,
+                          compound='center',
+                          bg="#333333",
+                          relief=FLAT)
+    alarm_button.place(x=60,y=330)
+    
+    world_button_image = image.resize((200, 60), Image.LANCZOS)
+    photo_world_button = ImageTk.PhotoImage(world_button_image)
     world_button = Button(menu_window,
+                          image=photo_world_button,                      
                           text="World Clock",
-                          font=("Arial",15,"bold"),
+                          font=("Arial",25),
+                          fg="White",
+                          compound='center',
+                          bg="#333333",
+                          relief=FLAT,
                           command=worldclock_window)
-    world_button.pack(pady=0.3)"""
+    world_button.place(x=330,y=330)
     menu_window.mainloop()   # puts window on screen and listens for events
     
 main()
