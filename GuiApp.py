@@ -135,17 +135,16 @@ def open_main_menu():
     menu_window.deiconify()
   
 def alarmsubmit():
-    global alarm_user_hours, alarm_user_mins, alarm_user_ampm, alarm_running
+    global alarm_user_hours, alarm_user_mins, alarm_running
 
     try:
         alarm_user_hours = int(alarm_hour_entry.get())
         alarm_user_mins = int(alarm_mins_entry.get())
-        alarm_user_ampm = am_pm.get().lower()
 
         # coverts 12hr format to 24hr
-        if alarm_user_ampm == "pm" and alarm_user_hours != 12:
+        if (x.get()==0) and alarm_user_hours != 12:
             alarm_user_hours += 12
-        elif alarm_user_ampm == "am" and alarm_user_hours == 12:
+        elif (x.get()==1) and alarm_user_hours == 12:
             alarm_user_hours = 0
 
         #case
@@ -169,7 +168,7 @@ def update_alarm():
     current_time = datetime.now()
     current_hours = current_time.hour
     current_minutes = current_time.minute
-    current_seconds = current_time.second
+    current_seconds = current_time.second   # debugging sake
 
     #debugging purpose
     print(f"Current Time: {current_hours:02}:{current_minutes:02}:{current_seconds:02}")
@@ -189,7 +188,7 @@ def update_alarm():
     
 
 def alarm_window():
-    global alarm_hour_entry, alarm_mins_entry, am_pm, alarm_label
+    global alarm_hour_entry, alarm_mins_entry, x, alarm_label
     alarm_window = Tk()
     alarm_window.geometry("540x540")
     alarm_window.title("Alarm")
@@ -210,9 +209,15 @@ def alarm_window():
     alarm_mins_entry.config(font=("Arial", 10), width = 5)
     alarm_mins_entry.pack(pady=25)
     
-    am_pm = Entry(alarm_window)
-    am_pm.config(font=("Arial", 10), width = 5)
-    am_pm.pack(pady=25)
+    ampm_list = ["AM","PM"]
+    x = IntVar()        # variable of am and pm
+    for index in range(len(ampm_list)):
+        ampm_radio = Radiobutton(alarm_window,
+                                 text=ampm_list[index],
+                                 variable=x,    # groups buttons 
+                                 value=index,    #gives each button diff values
+                                 font=("Arial", 10))
+        ampm_radio.pack()
     
     submitalarm = Button(alarm_window,
                          text="Submit",
@@ -229,6 +234,9 @@ def alarm_window():
 
 def worldclock_window():
    world_window = Tk()
+   world_window.geometry("540x540")
+   world_window.title("World Clock")
+   
    
 
    world_window.mainloop()
