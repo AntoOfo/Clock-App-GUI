@@ -1,6 +1,7 @@
 from tkinter import *
 from playsound import playsound
 from time import sleep
+from datetime import datetime
 
 def timersubmit():
     # global to access variables outside the function
@@ -132,6 +133,82 @@ def stopwatchwindow():
 
 def open_main_menu():
     menu_window.deiconify()
+  
+def alarmsubmit():
+    global alarm_user_hours, alarm_user_mins, alarm_user_ampm, alarm_running, alarm_label
+
+    alarm_user_hours = int(alarm_hour_entry.get())
+    alarm_user_mins = int(alarm_mins_entry.get())
+    alarm_user_ampm = am_pm.get()
+    alarm_running = True
+    
+    update_alarm()
+    
+def update_alarm():
+    global alarm_user_hours, alarm_user_mins, alarm_user_ampm
+    if alarm_user_ampm == "pm":
+        if alarm_user_hours != 12:
+            alarm_user_hours += 12
+    elif alarm_user_ampm == "am":
+        if alarm_user_hours == 12:
+            alarm_user_hours = 0
+            
+    if alarm_user_hours > 23 or alarm_user_hours < 0:
+        return  # maybe change to continue
+    elif alarm_user_mins > 59 or alarm_user_mins < 0:
+        return  # maybe change to continue
+    
+    alarm_label.config(text=f"Alarm set for {alarm_user_hours:02}:{alarm_user_mins}")
+    
+    current_time = datetime.now()
+    if (alarm_user_hours == current_time.hour and alarm_user_mins == current_time.minute):
+        alarm_label.config(text="Rise and Shine!")
+        playsound("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/Alarm Clock Sound Effect (Animated).mp3")
+        return
+    
+    alarm_label.after(1000, update_alarm)
+    
+
+def alarm_window():
+    global alarm_hour_entry, alarm_mins_entry, am_pm, alarm_label
+    alarm_window = Tk()
+    alarm_window.geometry("540x540")
+    alarm_window.title("Alarm")
+    
+    alarm_window.config(background="#9E9E9E")
+    
+    alarm_header = Label(alarm_window,
+                         text="ALARM",
+                         font=("Arial",40,"bold"),
+                         bg="#9E9E9E")
+    alarm_header.pack()
+    
+    alarm_hour_entry = Entry(alarm_window)
+    alarm_hour_entry.config(font=("Arial", 10), width=5)
+    alarm_hour_entry.pack(pady=20)
+    
+    alarm_mins_entry = Entry(alarm_window)
+    alarm_mins_entry.config(font=("Arial", 10), width = 5)
+    alarm_mins_entry.pack(pady=25)
+    
+    am_pm = Entry(alarm_window)
+    am_pm.config(font=("Arial", 10), width = 5)
+    am_pm.pack(pady=25)
+    
+    submitalarm = Button(alarm_window,
+                         text="Submit",
+                         font=("Arial", 10, "bold"),
+                         command=alarmsubmit)
+    submitalarm.pack(pady=30)
+    
+    alarm_label = Label(alarm_window,
+                        text="00:00",
+                        font=("Arial",25,"bold"))
+    alarm_label.pack(pady=30)
+
+    alarm_window.mainloop()
+
+
     
 def main():
     global menu_window
@@ -166,7 +243,8 @@ def main():
 
     alarm_button = Button(menu_window,
                           text="Alarm",
-                          font=("Arial",15,"bold"))
+                          font=("Arial",15,"bold"),
+                          command=alarm_window)
     alarm_button.pack(pady=70)
 
     world_button = Button(menu_window,
