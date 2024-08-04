@@ -1,7 +1,8 @@
 from tkinter import *
 from playsound import playsound
 from time import sleep
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
 
 def timersubmit():
     # global to access variables outside the function
@@ -237,6 +238,28 @@ def worldclock_window():
    world_window.geometry("540x540")
    world_window.title("World Clock")
    
+   world_window.config(background="#9E9E9E")
+   
+   world_header = Label(world_window,
+                        text="WORLD CLOCK",
+                        font=("Arial",30,"bold"),
+                        bg="#9E9E9E")
+   world_header.pack()
+   
+     
+   y = StringVar(world_window)
+   y.set("America/New_York")        # default text set
+   capital_drop = OptionMenu(world_window,      # option menu created
+                              y,
+                              "America/New_York","America/Los_Angeles","Europe/London","Europe/Paris","Asia/Tokyo","Australia/Sydney")
+   capital_drop.config(font=("Arial",12))
+   capital_drop.pack(padx=10, pady=50, fill='x')
+   
+   world_time = Label(world_window,
+                      text="00:00",
+                      font=("Arial",15,"bold"),
+                      bg="#9E9E9E")
+   world_time.pack()
    
 
    world_window.mainloop()
