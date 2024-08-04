@@ -312,10 +312,6 @@ def main():
     menu_window.resizable(False, False) # Cant resize window
     menu_window.title("Clock App")
     
-    total_columns = 3
-    menu_window.grid_columnconfigure((0,1,2,3,4,5,6), weight=1)
-    for i in range(7):
-        menu_window.grid_rowconfigure(i, weight=1)
 
     icon = PhotoImage(file="Clock.png") # Turns png to photoimage
     menu_window.iconphoto(True, icon)
