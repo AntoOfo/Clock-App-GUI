@@ -49,6 +49,7 @@ def timerwindow():
 
     timer_window = Tk()     # instance of timer window
     timer_window.geometry("540x540")
+    timer_window.resizable(False, False)
     timer_window.title("Timer")
 
     timer_window.config(background="#9E9E9E")
@@ -79,7 +80,7 @@ def timerwindow():
     backbutton = Button(timer_window,
                         text="Back",
                         font=("Arial",10,"bold"),
-                        command=open_main_menu)
+                        command=lambda: open_main_menu(timer_window))
     backbutton.pack(pady= 20)
     
    
@@ -110,6 +111,7 @@ def stopwatchwindow():
     sw_seconds = 0
     sw_window = Tk()
     sw_window.geometry("540x540")
+    sw_window.resizable(False, False)
     sw_window.title("Stopwatch")
     sw_window.config(background="#9E9E9E")
     sw_header = Label(sw_window,
@@ -127,7 +129,7 @@ def stopwatchwindow():
     back_button = Button(sw_window,
                          text="Back",
                          font=("Arial",15,"bold"),
-                         command=open_main_menu)
+                         command=lambda: open_main_menu(sw_window))
     back_button.pack(pady=20)
     
     sw_label = Label(sw_window,
@@ -138,7 +140,8 @@ def stopwatchwindow():
     
     sw_window.mainloop()
 
-def open_main_menu():
+def open_main_menu(current_window):
+    current_window.destroy()
     menu_window.deiconify()
   
 def alarmsubmit():
@@ -198,6 +201,7 @@ def alarm_window():
     global alarm_hour_entry, alarm_mins_entry, x, alarm_label
     alarm_window = Tk()
     alarm_window.geometry("540x540")
+    alarm_window.resizable(False, False)
     alarm_window.title("Alarm")
     
     alarm_window.config(background="#9E9E9E")
@@ -232,6 +236,12 @@ def alarm_window():
                          command=alarmsubmit)
     submitalarm.pack(pady=30)
     
+    alarm_backbutton = Button(alarm_window,
+                        text="Back",
+                        font=("Arial",10,"bold"),
+                        command=lambda: open_main_menu(alarm_window))
+    alarm_backbutton.pack(pady= 20)
+    
     alarm_label = Label(alarm_window,
                         text="00:00",
                         font=("Arial",25,"bold"))
@@ -253,6 +263,7 @@ def worldclock_window():
    global y, world_time_label
    world_window = Tk()
    world_window.geometry("540x540")
+   world_window.resizable(False, False)
    world_window.title("World Clock")
    
    world_window.config(background="#9E9E9E")
@@ -268,6 +279,12 @@ def worldclock_window():
                         font=("Arial",10,"bold"),
                         command=world_time)
    worldsubmit.pack()
+   
+   world_backbutton = Button(world_window,
+                        text="Back",
+                        font=("Arial",10,"bold"),
+                        command=lambda: open_main_menu(world_window))
+   world_backbutton.pack(pady= 20)
      
    y = StringVar(world_window)
    y.set("America/New_York")        # default text set
@@ -291,6 +308,7 @@ def main():
     global menu_window
     menu_window = Tk()      # instance of window
     menu_window.geometry("540x540")
+    menu_window.resizable(False, False) # Cant resize window
     menu_window.title("Clock App")
 
     icon = PhotoImage(file="Clock.png") # Turns png to photoimage
