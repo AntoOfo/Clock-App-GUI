@@ -25,7 +25,9 @@ def update_timer():
     if not timer_running:
         return
     if not (0<= user_minutes) or not (0 <= user_seconds <= 59):
-        timer_label.config(text="Invalid input")
+        timer_label.config(text="Invalid Input",
+                           font=("Arial",30,"bold"))
+        timer_label.place(x=165,y=390)
         return
     
     
@@ -195,22 +197,29 @@ def alarmsubmit():
         alarm_user_mins = int(alarm_mins_entry.get())
 
         # coverts 12hr format to 24hr
-        if (x.get()==0) and alarm_user_hours != 12:
+        if (x.get()==1) and alarm_user_hours != 12:
             alarm_user_hours += 12
-        elif (x.get()==1) and alarm_user_hours == 12:
+        elif (x.get()==0) and alarm_user_hours == 12:
             alarm_user_hours = 0
 
         #case
         if not (0 <= alarm_user_hours < 24) or not (0 <= alarm_user_mins < 60):
-            alarm_label.config(text="Invalid time")
+            alarm_label.config(text="Invalid time",
+                               font=("Arial",25,"bold"))
+            alarm_label.place(x=175,y=415)
             return
 
         alarm_running = True
-        alarm_label.config(text=f"Alarm set for {alarm_user_hours:02}:{alarm_user_mins:02}")
+        
+        alarm_label.config(text=f"Alarm set for {alarm_user_hours:02}:{alarm_user_mins:02}",
+                           font=("Arial",25,"bold"))
+        alarm_label.place(x=110,y=415)
         update_alarm()
         
     except ValueError:
-        alarm_label.config(text="Invalid input")
+        alarm_label.config(text="Invalid input",
+                           font=("Arial",25,"bold"))
+        alarm_label.place(x=175,y=415)
     
 def update_alarm():
     global alarm_user_hours, alarm_user_mins, alarm_running
@@ -228,7 +237,7 @@ def update_alarm():
     print(f"Alarm Time: {alarm_user_hours:02}:{alarm_user_mins:02}")
 
     if alarm_user_hours == current_hours and alarm_user_mins == current_minutes:
-        alarm_label.config(text="Rise and Shine!")
+
         try:
             playsound("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/Alarm Clock Sound Effect (Animated).mp3")
         except Exception as e:
@@ -241,55 +250,80 @@ def update_alarm():
     
 
 def alarm_window():
-    global alarm_hour_entry, alarm_mins_entry, x, alarm_label
-    alarm_window = Tk()
+    global alarm_hour_entry, alarm_mins_entry, x, alarm_label, photo
+    alarm_window = Toplevel()
     alarm_window.geometry("540x540")
     alarm_window.resizable(False, False)
     alarm_window.title("Alarm")
     
-    alarm_window.config(background="#9E9E9E")
+    alarm_window.config(background="#333333")
     
     alarm_header = Label(alarm_window,
+                         image=photo,
                          text="ALARM",
-                         font=("Arial",40,"bold"),
-                         bg="#9E9E9E")
-    alarm_header.pack()
+                         font=("Arial",45),
+                         relief=FLAT,
+                         bg="#333333",
+                         compound='center',
+                         fg="White")
+    alarm_header.place(x=95,y=25)
     
     alarm_hour_entry = Entry(alarm_window)
     alarm_hour_entry.config(font=("Arial", 10), width=5)
-    alarm_hour_entry.pack(pady=20)
+    alarm_hour_entry.place(x=165, y=220)
+    
+    hour_text = Label(alarm_window,
+                      text="Hour:",
+                      font=("Arial",18),
+                      bg="#333333",
+                      relief=FLAT,
+                      fg="White")
+    hour_text.place(x=90,y=213)
     
     alarm_mins_entry = Entry(alarm_window)
     alarm_mins_entry.config(font=("Arial", 10), width = 5)
-    alarm_mins_entry.pack(pady=25)
+    alarm_mins_entry.place(x=165, y=270)
+    
+    minute_text = Label(alarm_window,
+                        text="Minute:",
+                        font=("Arial",18),
+                        bg="#333333",
+                        relief=FLAT,
+                        fg="White")
+    minute_text.place(x=70, y=264)
     
     ampm_list = ["AM","PM"]
     x = IntVar()        # variable of am and pm
     for index in range(len(ampm_list)):
         ampm_radio = Radiobutton(alarm_window,
                                  text=ampm_list[index],
+                                 width=5,
                                  variable=x,    # groups buttons 
                                  value=index,    #gives each button diff values
                                  font=("Arial", 10))
-        ampm_radio.pack()
+        ampm_radio.place(x=315, y=220 + (index*50))
     
     submitalarm = Button(alarm_window,
                          text="Submit",
-                         font=("Arial", 10, "bold"),
+                         font=("Arial", 10),
+                         width=10,
                          command=alarmsubmit)
-    submitalarm.pack(pady=30)
+    submitalarm.place(x=115,y=320)
     
     alarm_backbutton = Button(alarm_window,
                         text="Back",
-                        font=("Arial",10,"bold"),
+                        font=("Arial",10),
+                        width=10,
                         command=lambda: open_main_menu(alarm_window))
-    alarm_backbutton.pack(pady= 20)
+    alarm_backbutton.place(x=315,y=320)
     
     alarm_label = Label(alarm_window,
                         text="00:00",
-                        font=("Arial",25,"bold"))
-    alarm_label.pack(pady=30)
-
+                        font=("Arial",45,"bold"),
+                        bg="#333333",
+                        fg="White")
+    alarm_label.place(x=184, y=390)
+    
     alarm_window.mainloop()
 
 def world_time():
