@@ -5,6 +5,8 @@ from datetime import datetime, timezone
 import pytz
 from PIL import Image, ImageTk
 
+photo = None
+
 def timersubmit():
     # global to access variables outside the function
     global user_minutes, user_seconds, timer_running, timer_label     
@@ -28,7 +30,10 @@ def update_timer():
     
     
     if user_seconds == 0 and user_minutes == 0:
-        timer_label.config(text="Time's Up!")
+        timer_label.config(text="Time's Up!",
+                           fg="Red",
+                           font=("Arial",30))
+        timer_label.place(x=165,y=390)
         playsound("C:/Users/anton/VSProjects/AlarmClock/AlarmClock/Alarm Clock Sound Effect (Animated).mp3")
         timer_running = False
         return
@@ -46,50 +51,76 @@ def update_timer():
     timer_window.after(1000, update_timer)     
 
 def timerwindow():
-    global minutes_entry, seconds_entry, timer_window, timer_label
+    global minutes_entry, seconds_entry, timer_window, timer_label, photo
 
-    timer_window = Tk()     # instance of timer window
+    timer_window = Toplevel()     # instance of timer window
     timer_window.geometry("540x540")
     timer_window.resizable(False, False)
     timer_window.title("Timer")
 
-    timer_window.config(background="#9E9E9E")
+    timer_window.config(background="#333333")
+
 
     timerlabel = Label(timer_window,
-                       text="TIMER",
-                       font=("Arial", 40, "bold"),
-                       bg="#9E9E9E",
-                       relief=SUNKEN,
-                       padx=5,
-                       pady=5)
-    timerlabel.pack(pady=20)
-
+                       image=photo,
+                       text="Timer",
+                       font=("Arial", 50),
+                       bg="#333333",
+                       relief=FLAT,
+                       compound='center',
+                       foreground="White"
+                       )
+    timerlabel.place(x=95,y=25)
+    
     minutes_entry = Entry(timer_window)
     minutes_entry.config(font=("Arial", 10), width=5)
-    minutes_entry.pack()
-
+    minutes_entry.place(x=280,y=210)
+    
+    minutes_text = Label(timer_window,
+                         text="Minutes:",
+                         font=("Arial",15),
+                         bg="#333333",
+                         relief=FLAT,
+                         foreground="White")
+    minutes_text.place(x=180,y=203)
+   
+    
     seconds_entry = Entry(timer_window)
     seconds_entry.config(font=("Arial", 10), width=5)
-    seconds_entry.pack(pady=30)
-
+    seconds_entry.place(x=280,y=270)
+    
+    seconds_text = Label(timer_window,
+                         text="Seconds:",
+                         font=("Arial",15),
+                         bg="#333333",
+                         relief=FLAT,
+                         foreground="White")
+    seconds_text.place(x=172,y=263)
+    
+    
     submittimer = Button(timer_window,
                          text="Submit",
-                         font=("Arial", 10, "bold"),
+                         font=("Arial", 10),
+                         width=10,
                          command=timersubmit)
-    submittimer.pack(pady=30)
+    submittimer.place(x=140,y=320)
+    
     
     backbutton = Button(timer_window,
                         text="Back",
-                        font=("Arial",10,"bold"),
+                        font=("Arial",10),
+                        width=10,
                         command=lambda: open_main_menu(timer_window))
-    backbutton.pack(pady= 20)
+    backbutton.place(x=300, y=320)
     
-   
+    
     timer_label = Label(timer_window,
                         text="00:00",
-                        font=("Arial", 25, "bold"))
-    timer_label.pack(pady=30)
-
+                        font=("Arial", 45, "bold"),
+                        bg="#333333",
+                        fg="White")
+    timer_label.place(x=184, y=390)
+    
     timer_window.mainloop()
 
 def update_stopwatch():
@@ -306,7 +337,7 @@ def worldclock_window():
 
     
 def main():
-    global menu_window
+    global menu_window, photo
     menu_window = Tk()      # instance of window
     menu_window.geometry("540x540")
     menu_window.resizable(False, False) # Cant resize window
