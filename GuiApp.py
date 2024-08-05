@@ -371,7 +371,17 @@ def worldclock_window():
    y.set("America/New_York")        # default text set
    capital_drop = OptionMenu(world_window,      # option menu created
                               y,
-                              "America/New_York","America/Los_Angeles","Europe/London","Europe/Paris","Asia/Tokyo","Australia/Sydney")
+                              "America/New_York",
+                              "America/Los_Angeles",
+                              "America/Mexico_City",
+                              "Europe/London",
+                              "Europe/Paris",
+                              "Europe/Dublin",
+                              "Europe/Madrid",
+                              "Asia/Tokyo",
+                              "Asia/Hong_Kong",
+                              "Africa/Lagos",
+                              "Australia/Sydney")
    capital_drop.config(font=("Arial",12), width=30)
    capital_drop.place(x=110, y=200)
    
