@@ -137,38 +137,49 @@ def update_stopwatch():
     
     
 def stopwatchwindow():
-    global start_button, sw_label, sw_window, sw_seconds, sw_minutes
+    global start_button, sw_label, sw_window, sw_seconds, sw_minutes, photo
     
     sw_minutes = 0
     sw_seconds = 0
-    sw_window = Tk()
+    sw_window = Toplevel()
     sw_window.geometry("540x540")
     sw_window.resizable(False, False)
+    
+
     sw_window.title("Stopwatch")
-    sw_window.config(background="#9E9E9E")
+    sw_window.config(background="#333333")
+    
+
     sw_header = Label(sw_window,
+                      image=photo,
                       text="Stopwatch",
-                      font=("Arial",40,"bold"),
-                      bg="#9E9E9E")
-    sw_header.pack()
+                      font=("Arial",45),
+                      relief=FLAT,
+                      bg="#333333",
+                      compound='center',
+                      fg="White")
+    sw_header.place(x=95,y=25)
     
     start_button = Button(sw_window,
                           text="Start",
-                          font=("Arial",15,"bold"),
+                          font=("Arial",10),
+                          width=10,
                           command=update_stopwatch)
-    start_button.pack(pady=30)
+    start_button.place(x=110,y=360)
     
     back_button = Button(sw_window,
                          text="Back",
-                         font=("Arial",15,"bold"),
+                         font=("Arial",10),
+                         width=10,
                          command=lambda: open_main_menu(sw_window))
-    back_button.pack(pady=20)
+    back_button.place(x=320,y=360)
     
     sw_label = Label(sw_window,
-                     text="0:00",
-                     font=("Arial",40,"bold"),
-                     bg="#9E9E9E")
-    sw_label.pack(pady=20)
+                     text="00:00",
+                     font=("Arial",45,"bold"),
+                     bg="#333333",
+                     fg="White")
+    sw_label.place(x=184,y=210)
     
     sw_window.mainloop()
 
