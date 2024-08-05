@@ -337,45 +337,51 @@ def world_time():
     world_time_label.after(1000, world_time)
 
 def worldclock_window():
-   global y, world_time_label
-   world_window = Tk()
+   global y, world_time_label, photo
+   world_window = Toplevel()
    world_window.geometry("540x540")
    world_window.resizable(False, False)
    world_window.title("World Clock")
    
-   world_window.config(background="#9E9E9E")
+   world_window.config(background="#333333")
    
    world_header = Label(world_window,
-                        text="WORLD CLOCK",
-                        font=("Arial",30,"bold"),
-                        bg="#9E9E9E")
-   world_header.pack()
+                        image=photo,
+                        text="World Clock",
+                        font=("Arial",40),
+                        bg="#333333",
+                        relief=FLAT,
+                        compound='center',
+                        fg="White")
+   world_header.place(x=95, y=25)
    
    worldsubmit = Button(world_window,
                         text="Submit",
                         font=("Arial",10,"bold"),
                         command=world_time)
-   worldsubmit.pack()
+   worldsubmit.place(x=110,y=240)
    
    world_backbutton = Button(world_window,
                         text="Back",
                         font=("Arial",10,"bold"),
                         command=lambda: open_main_menu(world_window))
-   world_backbutton.pack(pady= 20)
-     
+   world_backbutton.place(x=383, y=240)
+   
    y = StringVar(world_window)
    y.set("America/New_York")        # default text set
    capital_drop = OptionMenu(world_window,      # option menu created
                               y,
                               "America/New_York","America/Los_Angeles","Europe/London","Europe/Paris","Asia/Tokyo","Australia/Sydney")
-   capital_drop.config(font=("Arial",12))
-   capital_drop.pack(padx=10, pady=50, fill='x')
+   capital_drop.config(font=("Arial",12), width=30)
+   capital_drop.place(x=110, y=200)
+   
    
    world_time_label = Label(world_window,
                       text="00:00",
-                      font=("Arial",15,"bold"),
-                      bg="#9E9E9E")
-   world_time_label.pack()
+                      font=("Arial",45,"bold"),
+                      bg="#333333",
+                      fg="White")
+   world_time_label.place(x=184,y=390)
    
 
    world_window.mainloop()
